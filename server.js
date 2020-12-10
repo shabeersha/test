@@ -33,14 +33,15 @@ io.on('connection', (socket) => {
 			users: getRoomUsers(user.room)
 		});
 	});
-	socket.on('demoChat', (buffer) => {
+	socket.on('fileSend', (buffer) => {
 		console.log(buffer);
 		console.log('Hello World');
-		io.emit('demoChat2', { buffer: buffer });
+		io.emit('fileReceiver', { buffer: buffer });
 	});
 	// Listen for chatMessage
 	socket.on('chatMessage', (msg) => {
 		const user = getCurrentUser(socket.id);
+		console.log(user);
 		io.to(user.room).emit('message', formatMessage(user.username, msg));
 	});
 

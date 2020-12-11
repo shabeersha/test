@@ -18,24 +18,38 @@ document.getElementById('submit-file').addEventListener('click', function () {
   fileReader.onload = (evt) => {
     var arrayBuffer = fileReader.result;
     console.log(arrayBuffer);
-    socket.emit('fileSend', {buffer: arrayBuffer});
+    socket.emit('fileSend', {buffer: arrayBuffer, type: slice.type});
   };
 });
 
 socket.on('fileReceiver', (buffer) => {
   let arrayBuffer = buffer.buffer.buffer;
   console.log(buffer.buffer.buffer);
+  console.log(buffer.buffer.type);
+  let type = buffer.buffer.type;
   var file = new File([arrayBuffer], 'image.jpg');
   console.log(file);
-  let image = URL.createObjectURL(file);
-  console.log(image);
-  let div = document.getElementById('imgPreview');
-  let img = document.createElement('IMG');
-  img.setAttribute('src', image);
-  img.style.width = "200px"
-  img.style.height = "200px"
-  div.appendChild(img);
-  console.log(div);
+  if (type === 'image/jpeg') {
+    let image = URL.createObjectURL(file);
+    console.log(image);
+    let div = document.getElementById('imgPreview');
+    let img = document.createElement('IMG');
+    img.setAttribute('src', image);
+    img.style.width = '200px';
+    img.style.height = '200px';
+    div.appendChild(img);
+    console.log(div);
+  } else if (type === 'video/x-matroska') {
+    let videoFile = URL.createObjectURL(file);
+    let div = document.getElementById('videoPreview');
+	let video = document.createElement('video');
+	video.style.width = '200px';
+    video.style.height = '200px';
+    video.src = videoFile;
+    video.autoplay = true;
+    div.appendChild(video);
+    console.log(div);
+  }
 });
 
 // Join chatroom

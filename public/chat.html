@@ -11,6 +11,22 @@
     />
     <link rel="stylesheet" href="css/style.css" />
     <title>ChatCord App</title>
+
+    <style>
+      #item {
+        margin: 30px;
+        width: 150px;
+        height: 150px;
+        background-color: #EEE;
+        border: 5px dashed #111;
+        border-radius: 50%;
+      }
+  
+      #item:hover {
+        background-color: #CCC;
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
     <div class="chat-container">
@@ -45,10 +61,14 @@
        id="avatar" name="avatar"
        accept="image/png, image/jpeg">
         <button id="submit-file" >Submit</button>
+      
+    <button id="start" >Start</button>
+    <button id="stop" >Stop</button>
+    <button id="item" >Press Button</button>
 
     <div id="imgPreview" ></div>
     <div id="videoPreview" ></div>
-
+    <div id="audioPreview" ></div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
       integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4="
@@ -56,5 +76,6 @@
     ></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/main.js"></script>
+
   </body>
 </html>

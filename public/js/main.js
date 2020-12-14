@@ -240,6 +240,15 @@ socket.on('message', (message) => {
 	chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 
+socket.on('oldmessage', (message) => {
+	console.log(message);
+	message.forEach((element) => {
+		outputMessage(element);
+		chatMessages.scrollTop = chatMessages.scrollHeight;
+	});
+	// Scroll down
+});
+
 // Message submit
 chatForm.addEventListener('submit', (e) => {
 	e.preventDefault();

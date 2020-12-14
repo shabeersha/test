@@ -2,12 +2,24 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
+const Mongo = require('mongodb').MongoClient;
 const formatMessage = require('./utils/messages');
 const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
+
+//Mongo Client Connection
+
+const state = {
+	db: null
+};
+
+Mongo.connect('mongodb://127.0.0.1:27017', { useUnifiedTopology: true }).then((db) => {
+	console.log('Connected to database');
+	state.db = db;
+});
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -23,6 +35,17 @@ io.on('connection', (socket) => {
 
 		// Welcome current user
 		socket.emit('message', formatMessage(botName, 'Welcome to ChatCord!'));
+		state.db
+			.db('MSG')
+			.collection('message')
+			.find({
+				room: user.room
+			})
+			.toArray()
+			.then((res) => {
+				console.log(res);
+				socket.emit('oldmessage', res);
+			});
 
 		// Broadcast when a user connects
 		socket.broadcast.to(user.room).emit('message', formatMessage(botName, `${user.username} has joined the chat`));
@@ -41,6 +64,20 @@ io.on('connection', (socket) => {
 	// Listen for chatMessage
 	socket.on('chatMessage', (msg) => {
 		const user = getCurrentUser(socket.id);
+		const message = formatMessage(user.username, msg);
+		state.db
+			.db('MSG')
+			.collection('message')
+			.insertOne({
+				room: user.room,
+				username: message.username,
+				text: message.text,
+				time: message.time
+			})
+			.then((res) => {
+				console.log('Inserted into db');
+			});
+		console.log(user.room);
 		console.log(user);
 		io.to(user.room).emit('message', formatMessage(user.username, msg));
 	});

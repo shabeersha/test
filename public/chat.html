@@ -11,22 +11,6 @@
     />
     <link rel="stylesheet" href="css/style.css" />
     <title>ChatCord App</title>
-
-    <style>
-      #item {
-        margin: 30px;
-        width: 150px;
-        height: 150px;
-        background-color: #EEE;
-        border: 5px dashed #111;
-        border-radius: 50%;
-      }
-  
-      #item:hover {
-        background-color: #CCC;
-        cursor: pointer;
-      }
-    </style>
   </head>
   <body>
     <div class="chat-container">
@@ -41,34 +25,71 @@
           <h3><i class="fas fa-users"></i> Users</h3>
           <ul id="users"></ul>
         </div>
-        <div class="chat-messages"></div>
+        <div id="chat-messages" class="chat-messages">
+          <!-- <div id="audioPreview"></div> -->
+        </div>
       </main>
       <div class="chat-form-container">
-        <form id="chat-form">
-          <input
-            id="msg"
-            type="text"
-            placeholder="Enter Message"
-            required
-            autocomplete="off"
-          />
-          <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
-        </form>
+        <div class="popupOption" id="popupOption" style="display: none">
+          <button class="btnStyle" type="button" id="submit-file">
+            <i class="fas fa-images imagefile btnStyleITag"></i>
+          </button>
+          <button class="btnStyle" type="button">
+            <i class="fas fa-video imagefile btnStyleITag"></i>
+          </button>
+          <button class="btnStyle" type="button">
+            <i class="fas fa-file-audio imagefile btnStyleITag"></i>
+          </button>
+          <button class="btnStyle" type="button">
+            <i class="fas fa-images imagefile btnStyleITag"></i>
+          </button>
+        </div>
+        <div class="inputdiv">
+          <form id="chat-form">
+            <input
+              class="chatInput"
+              id="msg"
+              type="text"
+              placeholder="Enter Message"
+              required
+              autocomplete="off"
+            />
+            <button class="btn">
+              <i
+                class="fas fa-paperclip"
+                id="popup"
+                style="margin-top: 6px"
+              ></i>
+            </button>
+            <label for="avatar"> </label>
+            <input
+              type="file"
+              id="avatar"
+              name="avatar"
+              accept="image/png, image/jpeg,image/jpg"
+              style="display: none"
+            />
+            <button class="btn">
+              <i class="fas fa-microphone" id="item"></i>
+            </button>
+            <button class="btn">
+              <i class="fas fa-paper-plane" id="submit"></i>
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-      <h1> Input File  </h1>
-    <input type="file"
-       id="avatar" name="avatar"
-       accept="image/png, image/jpeg">
-        <button id="submit-file" >Submit</button>
-      
-    <button id="start" >Start</button>
-    <button id="stop" >Stop</button>
-    <button id="item" >Press Button</button>
+    <h1>Input File</h1>
+    <button id="submit-file">Submit</button>
 
-    <div id="imgPreview" ></div>
-    <div id="videoPreview" ></div>
-    <div id="audioPreview" ></div>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+
+    <button>Press Button</button>
+
+    <div id="imgPreview"></div>
+    <div id="videoPreview"></div>
+
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
       integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4="
@@ -76,6 +97,5 @@
     ></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/main.js"></script>
-
   </body>
 </html>

@@ -1,4 +1,6 @@
 const AWS = require('aws-sdk');
+var fs =  require('fs');
+
 const aws = async () => {
 	try {
 		await AWS.config.update({
@@ -8,7 +10,7 @@ const aws = async () => {
 		});
 		var s3 = new AWS.S3();
 		var myBucket = 'chatbucket007';
-		var myKey = 'text1File';
+		var myKey = 'kerala';
 		params = { Bucket: myBucket, Key: myKey, Body: 'Valueeee or some data', ACL: 'public-read' };
 		s3.putObject(params, function(err, data) {
 			if (err) {
@@ -21,5 +23,8 @@ const aws = async () => {
 		console.log(error);
 	}
 };
+
+
+
 
 aws();

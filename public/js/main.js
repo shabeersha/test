@@ -54,6 +54,7 @@ socket.on('fileReceiver', (buffer) => {
     img.style.height = '100px';
     div.appendChild(img);
     document.querySelector('.chat-messages').appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
     console.log(div);
   } else if (
     type === 'video/x-matroska' ||
@@ -77,6 +78,7 @@ socket.on('fileReceiver', (buffer) => {
     video.autoplay = true;
     childDiv.appendChild(video);
     parentDiv.appendChild(childDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
     console.log(div);
   }
   //    else if (type === 'video/webm') {
@@ -106,6 +108,7 @@ socket.on('fileReceiver', (buffer) => {
     audio.controls = 'controls';
     childDiv.appendChild(audio);
     parentDiv.appendChild(childDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
     console.log(parentDiv);
   } else {
     let audioFile = URL.createObjectURL(file);
@@ -121,6 +124,7 @@ socket.on('fileReceiver', (buffer) => {
     audio.src = audioFile;
     audio.controls = 'controls';
     div.appendChild(audio);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
     console.log(div);
   }
 });
@@ -290,8 +294,13 @@ socket.on('message', (message) => {
 socket.on('oldmessage', (message) => {
 	console.log(message);
 	message.forEach((element) => {
-		outputMessage(element);
-		chatMessages.scrollTop = chatMessages.scrollHeight;
+    if(element.text){
+      outputMessage(element);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }else if(element.type) {
+         console.log("Hello  World")
+    }
+      
 	});
 	// Scroll down
 });

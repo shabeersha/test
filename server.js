@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 const Mongo = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectID
 const formatMessage = require('./utils/messages');
 const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users');
 const AWS = require('aws-sdk');
@@ -64,19 +65,85 @@ io.on('connection', (socket) => {
       users: getRoomUsers(user.room),
     });
   });
-  socket.on('fileSend', (buffer) => {
-    const user = getCurrentUser(socket.id);
-    console.log(user);
-    console.log(buffer);
-    io.to(user.room).emit(
-      'fileReceiver',
-      formatMessage(user.username, {buffer: buffer})
-    );
+//========================================================
+
+
+socket.on('fileSend',async (buffer) => {
+    try {
+//=================AWS=======================================		
+await AWS.config.update({
+	accessKeyId: 'AKIAILH5LVLLYIKPBKUQ',
+	secretAccessKey: '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',
+	region: 'ap-south-1'
+});
+var s3 = new AWS.S3();
+var myBucket = 'chatbucket007';
+var myKey = `${new ObjectId()}`;
+params = { Bucket: myBucket, Key: myKey, Body: buffer.buffer, ACL: 'public-read' };
+s3.putObject(params, function(err, data) {
+	if (err) {
+		console.log(err);
+	} else {
+		const user = getCurrentUser(socket.id);
+	    const message = formatMessage(user.username, `https://chatbucket007.s3.ap-south-1.amazonaws.com/${myKey}`);
+	state.db
+		.db('MSG')
+		.collection('message')
+		.insertOne({
+			room: user.room,
+			username: message.username,
+			text: null,
+			time: message.time,
+			url:`https://chatbucket007.s3.ap-south-1.amazonaws.com/${myKey}`,
+			type:buffer.type
+			
+		})
+		.then((res) => {
+			console.log('Inserted into db');
+		});
+		console.log('Successfully uploaded data to myBucket/myKey');
+	//==================EMITER====================================
+	
+	console.log(user);
+	console.log(buffer);
+	io.to(user.room).emit(
+	'fileReceiver',
+	formatMessage(user.username, {buffer: buffer})
+	);
+//=======================================================
+	
+	
+	}
+});
+	} catch (error) {
+		console.log(error)
+	}
   });
+
+
+
+
+
+
+
+//==========================================================
   // Listen for chatMessage
   socket.on('chatMessage', (msg) => {
     const user = getCurrentUser(socket.id);
-    console.log(user);
+	console.log(user);
+	const message = formatMessage(user.username, msg);
+		state.db
+			.db('MSG')
+			.collection('message')
+			.insertOne({
+				room: user.room,
+				username: message.username,
+				text: message.text,
+				time: message.time
+			})
+			.then((res) => {
+				console.log('Inserted into db');
+			});
     io.to(user.room).emit('message', formatMessage(user.username, msg));
   });
 

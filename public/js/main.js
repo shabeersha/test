@@ -12,12 +12,12 @@ const {username, room} = Qs.parse(location.search, {
 
 const socket = io.connect("http://13.232.239.109/");
 
-document.getElementById('submit-file').addEventListener('click', function () {
+document.getElementById('popup').addEventListener('click', function () {
   document.getElementById('avatar').click();
 });
 
 document.getElementById('avatar').addEventListener('change', function () {
-  document.getElementById('popupOption').style.display = 'none';
+  // document.getElementById('popupOption').style.display = 'none';
   const input = document.querySelector('#avatar');
   var fileReader = new FileReader(),
     slice = input.files[0];
@@ -244,31 +244,31 @@ const recordAudio = () => {
   });
 };
 
-let startEvt = document.getElementById('start');
-let stopEvt = document.getElementById('stop');
+// let startEvt = document.getElementById('start');
+// let stopEvt = document.getElementById('stop');
 
-startEvt.addEventListener('click', () => {
-  navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
-    const mediaRecorder = new MediaRecorder(stream);
-    mediaRecorder.start();
+// startEvt.addEventListener('click', () => {
+//   navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
+//     const mediaRecorder = new MediaRecorder(stream);
+//     mediaRecorder.start();
 
-    const audioChunks = [];
-    mediaRecorder.addEventListener('dataavailable', (event) => {
-      audioChunks.push(event.data);
-    });
+//     const audioChunks = [];
+//     mediaRecorder.addEventListener('dataavailable', (event) => {
+//       audioChunks.push(event.data);
+//     });
 
-    mediaRecorder.addEventListener('stop', async () => {
-      const audioBlob = new Blob(audioChunks);
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const audio = new Audio(audioUrl);
-      var bufferPromise = await audioBlob.arrayBuffer();
-      socket.emit('fileSend', {buffer: bufferPromise, type: 'audio'});
-    });
-    stopEvt.addEventListener('click', () => {
-      mediaRecorder.stop();
-    });
-  });
-});
+//     mediaRecorder.addEventListener('stop', async () => {
+//       const audioBlob = new Blob(audioChunks);
+//       const audioUrl = URL.createObjectURL(audioBlob);
+//       const audio = new Audio(audioUrl);
+//       var bufferPromise = await audioBlob.arrayBuffer();
+//       socket.emit('fileSend', {buffer: bufferPromise, type: 'audio'});
+//     });
+//     stopEvt.addEventListener('click', () => {
+//       mediaRecorder.stop();
+//     });
+//   });
+// });
 
 //===============================================================================
 // Join chatroom
@@ -358,19 +358,19 @@ function outputUsers(users) {
 }
 //===================================================================
 
-document.getElementById('popup').addEventListener('click', () => {
-  console.log('popup');
-  if (popupStatus) {
-    console.log('true');
+// document.getElementById('popup').addEventListener('click', () => {
+//   console.log('popup');
+//   if (popupStatus) {
+//     console.log('true');
 
-    document.getElementById('popupOption').style.display = 'grid';
-    // console.log(document.getElemgntById('popupOption'));
+//     document.getElementById('popupOption').style.display = 'grid';
+//     // console.log(document.getElemgntById('popupOption'));
 
-    popupStatus = false;
-  } else {
-    console.log('false');
-    document.getElementById('popupOption').style.display = 'none';
-    // console.log(document.getElementById('popupOption'));
-    popupStatus = true;
-  }
-});
+//     popupStatus = false;
+//   } else {
+//     console.log('false');
+//     document.getElementById('popupOption').style.display = 'none';
+//     // console.log(document.getElementById('popupOption'));
+//     popupStatus = true;
+//   }
+// });

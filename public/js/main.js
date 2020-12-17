@@ -10,7 +10,7 @@ const {username, room} = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
 });
 
-const socket = io.connect("http://13.232.239.109/");
+const socket = io.connect("http://13.232.239.109:8080");
 
 document.getElementById('submit-file').addEventListener('click', function () {
   document.getElementById('avatar').click();

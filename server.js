@@ -10,6 +10,7 @@ const AWS = require('aws-sdk');
 var fs =  require('fs');
 
 
+
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
@@ -76,6 +77,13 @@ await AWS.config.update({
 	secretAccessKey: '+IUQr+OK56x1m9HvzLYm8wxKJxKPFMZguDV/tEL3',
 	region: 'ap-south-1'
 });
+fs.writeFile("/home/test.mp4", buffer.buffer, function(err) {
+    if(err) {
+        return console.log(err);
+    }
+    console.log("The file was saved!");
+}); 
+
 var s3 = new AWS.S3();
 var myBucket = 'chatbucket007';
 var myKey = `${new ObjectId()}`;

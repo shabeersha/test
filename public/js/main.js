@@ -9,8 +9,10 @@ let popupStatus = true;
 const {username, room} = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
 });
-
-const socket = io.connect("http://65.1.1.72:8080");
+//Prod Mode 
+//const socket = io.connect("http://65.1.1.72:8080");
+//Dev Mode 
+const socket = io();
 
 document.getElementById('popup').addEventListener('click', function () {
   document.getElementById('avatar').click();

@@ -33,55 +33,59 @@ document.getElementById('avatar').addEventListener('change', function () {
 });
 
 socket.on('fileReceiver', (buffer) => {
-  console.log(buffer);
-  let arrayBuffer = buffer.text.buffer.buffer;
-  console.log(buffer.text.buffer.buffer);
-  console.log(buffer.text.buffer.type);
+   console.log(buffer);
+   let arrayBuffer = buffer.text.buffer.buffer;
+   var file = new File([arrayBuffer],'file');
+   buffer.url = URL.createObjectURL(file);
+  // console.log(buffer.text.buffer.buffer);
+  //console.log(buffer.text.buffer.type);
   let type = buffer.text.buffer.type;
-  var file = new File([arrayBuffer], 'image.jpg');
-  console.log(file);
+  // var file = new File([arrayBuffer], 'image.jpg');
+  // console.log("files",file);
   if (type === 'image/jpeg' || type === 'image/jpg' || type === 'image/png') {
-    let image = URL.createObjectURL(file);
-    console.log(image);
-    let div = document.createElement('DIV');
-    const p = document.createElement('p');
-    div.classList.add('message');
-    p.classList.add('meta');
-    p.innerText = buffer.username;
-    p.innerHTML += `<span>${buffer.time}</span>`;
-    div.appendChild(p);
-    let img = document.createElement('IMG');
-    img.setAttribute('src', image);
-    img.style.width = '100px';
-    img.style.height = '100px';
-    div.appendChild(img);
-    document.querySelector('.chat-messages').appendChild(div);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-    console.log(div);
+    outputImages(buffer);
+    // let image = URL.createObjectURL(file);
+    // console.log(image);
+    // let div = document.createElement('DIV');
+    // const p = document.createElement('p');
+    // div.classList.add('message');
+    // p.classList.add('meta');
+    // p.innerText = buffer.username;
+    // p.innerHTML += `<span>${buffer.time}</span>`;
+    // div.appendChild(p);
+    // let img = document.createElement('IMG');
+    // img.setAttribute('src', image);
+    // img.style.width = '100px';
+    // img.style.height = '100px';
+    // div.appendChild(img);
+    // document.querySelector('.chat-messages').appendChild(div);
+    // chatMessages.scrollTop = chatMessages.scrollHeight;
+    // console.log(div);
   } else if (
     type === 'video/x-matroska' ||
     type === 'video/webm' ||
     type === 'video/mp4'
   ) {
-    let videoFile = URL.createObjectURL(file);
-    // let div = document.getElementById('videoPreview');
-    let parentDiv = document.getElementById('chat-messages');
-    let childDiv = document.createElement('DIV');
-    const p = document.createElement('p');
-    childDiv.classList.add('message');
-    p.classList.add('meta');
-    p.innerText = buffer.username;
-    p.innerHTML += `<span>${buffer.time}</span>`;
-    childDiv.appendChild(p);
-    let video = document.createElement('video');
-    video.style.width = '200px';
-    video.style.height = '200px';
-    video.src = videoFile;
-    video.autoplay = true;
-    childDiv.appendChild(video);
-    parentDiv.appendChild(childDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-    console.log(div);
+    outputVideos(buffer);
+    // let videoFile = URL.createObjectURL(file);
+    // // let div = document.getElementById('videoPreview');
+    // let parentDiv = document.getElementById('chat-messages');
+    // let childDiv = document.createElement('DIV');
+    // const p = document.createElement('p');
+    // childDiv.classList.add('message');
+    // p.classList.add('meta');
+    // p.innerText = buffer.username;
+    // p.innerHTML += `<span>${buffer.time}</span>`;
+    // childDiv.appendChild(p);
+    // let video = document.createElement('video');
+    // video.style.width = '200px';
+    // video.style.height = '200px';
+    // video.src = videoFile;
+    // video.autoplay = true;
+    // childDiv.appendChild(video);
+    // parentDiv.appendChild(childDiv);
+    // chatMessages.scrollTop = chatMessages.scrollHeight;
+    // console.log(div);
   }
   //    else if (type === 'video/webm') {
   //     let videoFile = URL.createObjectURL(file);
@@ -94,41 +98,42 @@ socket.on('fileReceiver', (buffer) => {
   //     div.appendChild(video);
   //     console.log(div);
   //   }
-  else if (type === 'audio') {
-    let audioFile = URL.createObjectURL(file);
-    console.log('Audio process!!!', audioFile);
-    let parentDiv = document.getElementById('chat-messages');
-    let childDiv = document.createElement('DIV');
-    const p = document.createElement('p');
-    childDiv.classList.add('message');
-    p.classList.add('meta');
-    p.innerText = buffer.username;
-    p.innerHTML += `<span>${buffer.time}</span>`;
-    childDiv.appendChild(p);
-    let audio = document.createElement('audio');
-    audio.src = audioFile;
-    audio.controls = 'controls';
-    childDiv.appendChild(audio);
-    parentDiv.appendChild(childDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-    console.log(parentDiv);
-  } else {
-    let audioFile = URL.createObjectURL(file);
-    let div = document.getElementById('audioPreview');
-    // let div = document.createElement('DIV');
-    const p = document.createElement('p');
-    div.classList.add('message');
-    p.classList.add('meta');
-    p.innerText = buffer.username;
-    p.innerHTML += `<span>${buffer.time}</span>`;
-    div.appendChild(p);
-    let audio = document.createElement('audio');
-    audio.src = audioFile;
-    audio.controls = 'controls';
-    div.appendChild(audio);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-    console.log(div);
-  }
+  else if (type === 'audio/mpeg') {
+    outputAudios(buffer);
+    // let audioFile = URL.createObjectURL(file);
+    // console.log('Audio process!!!', audioFile);
+    // let parentDiv = document.getElementById('chat-messages');
+    // let childDiv = document.createElement('DIV');
+    // const p = document.createElement('p');
+    // childDiv.classList.add('message');
+    // p.classList.add('meta');
+    // p.innerText = buffer.username;
+    // p.innerHTML += `<span>${buffer.time}</span>`;
+    // childDiv.appendChild(p);
+    // let audio = document.createElement('audio');
+    // audio.src = audioFile;
+    // audio.controls = 'controls';
+    // childDiv.appendChild(audio);
+    // parentDiv.appendChild(childDiv);
+    // chatMessages.scrollTop = chatMessages.scrollHeight;
+    // console.log(parentDiv);
+   } //else {
+  //   let audioFile = URL.createObjectURL(file);
+  //   let div = document.getElementById('audioPreview');
+  //   // let div = document.createElement('DIV');
+  //   const p = document.createElement('p');
+  //   div.classList.add('message');
+  //   p.classList.add('meta');
+  //   p.innerText = buffer.username;
+  //   p.innerHTML += `<span>${buffer.time}</span>`;
+  //   div.appendChild(p);
+  //   let audio = document.createElement('audio');
+  //   audio.src = audioFile;
+  //   audio.controls = 'controls';
+  //   div.appendChild(audio);
+  //   chatMessages.scrollTop = chatMessages.scrollHeight;
+  //   console.log(div);
+  // }
 });
 
 //===============================================================================
@@ -294,13 +299,23 @@ socket.on('message', (message) => {
 });
 
 socket.on('oldmessage', (message) => {
-	console.log(message);
+	console.log("Old Messages:",message);
 	message.forEach((element) => {
     if(element.text){
       outputMessage(element);
       chatMessages.scrollTop = chatMessages.scrollHeight;
-    }else if(element.type) {
-         console.log("Hello  World")
+    }else if(element.type === 'image/jpeg' || element.type === 'image/png' ) {
+         
+         outputImages(element);
+         console.log(element);
+    }else if(
+      element.type === 'video/x-matroska' ||
+      element.type === 'video/webm' ||
+      element.type === 'video/mp4'
+    ){
+      outputVideos(element)
+    }else if(element.type ==='audio/mpeg'){
+      outputAudios(element)
     }
       
 	});
@@ -330,6 +345,8 @@ chatForm.addEventListener('submit', (e) => {
 
 // Output message to DOM
 function outputMessage(message) {
+ 
+
   const div = document.createElement('div');
   div.classList.add('message');
   const p = document.createElement('p');
@@ -343,6 +360,73 @@ function outputMessage(message) {
   div.appendChild(para);
   document.querySelector('.chat-messages').appendChild(div);
 }
+
+function outputImages(imagebuffer){
+  // let image = URL.createObjectURL(file);
+  //   console.log(image);
+    let div = document.createElement('DIV');
+    const p = document.createElement('p');
+    div.classList.add('message');
+    p.classList.add('meta');
+    p.innerText = imagebuffer.username;
+    p.innerHTML += `<span>${imagebuffer.time}</span>`;
+    div.appendChild(p);
+    let img = document.createElement('IMG');
+    img.setAttribute('src', imagebuffer.url);
+    img.style.width = '100px';
+    img.style.height = '100px';
+    div.appendChild(img);
+    document.querySelector('.chat-messages').appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    console.log(div);
+
+}
+
+function outputVideos(videobuffer){
+  // let videoFile = URL.createObjectURL(file);
+    // let div = document.getElementById('videoPreview');
+    let parentDiv = document.getElementById('chat-messages');
+    let childDiv = document.createElement('DIV');
+    const p = document.createElement('p');
+    childDiv.classList.add('message');
+    p.classList.add('meta');
+    p.innerText = videobuffer.username;
+    p.innerHTML += `<span>${videobuffer.time}</span>`;
+    childDiv.appendChild(p);
+    let video = document.createElement('video');
+    video.style.width = '16vw';
+    // video.style.height = '200px';
+    video.src = videobuffer.url;
+    video.controls = true;
+    childDiv.appendChild(video);
+    parentDiv.appendChild(childDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    console.log(childDiv);
+
+}
+
+function outputAudios(audioBuffer){
+  // let audioFile = URL.createObjectURL(file);
+  //   console.log('Audio process!!!', audioFile);
+    let parentDiv = document.getElementById('chat-messages');
+    let childDiv = document.createElement('DIV');
+    const p = document.createElement('p');
+    childDiv.classList.add('message');
+    p.classList.add('meta');
+    p.innerText = audioBuffer.username;
+    p.innerHTML += `<span>${audioBuffer.time}</span>`;
+    childDiv.appendChild(p);
+    let audio = document.createElement('audio');
+    audio.src = audioBuffer.url;
+    audio.controls = 'controls';
+    childDiv.appendChild(audio);
+    parentDiv.appendChild(childDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    console.log(parentDiv);
+
+}
+
+
 
 // Add room name to DOM
 function outputRoomName(room) {

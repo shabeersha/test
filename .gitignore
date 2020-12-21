@@ -1,7 +1,7 @@
 node_modules/
 .DS_Store
-media/audios/
-media/videos/
-media/images/
-media/others/
+public/media/audios/
+public/media/videos/
+public/media/images/
+public/media/others/
 

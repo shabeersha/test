@@ -1,15 +1,15 @@
 # ignore files
 node_modules/
 .DS_Store
-public/media/audios/
-public/media/videos/
-public/media/images/
-public/media/others/
+# public/media/audios/
+# public/media/videos/
+# public/media/images/
+# public/media/others/
 
 
 
 # but keep the folder
-!public/media/others/.gitkee
-!public/media/images/.gitkee
-!public/media/videos/.gitkee
-!public/media/audios/.gitkee
+!public/media/others/.gitkeep
+!public/media/images/.gitkeep
+!public/media/videos/.gitkeep
+!public/media/audios/.gitkeep

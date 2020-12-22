@@ -1,10 +1,10 @@
 # ignore files
 node_modules/
 .DS_Store
-# public/media/audios/
-# public/media/videos/
-# public/media/images/
-# public/media/others/
+public/media/audios/
+public/media/videos/
+public/media/images/
+public/media/others/
 
 
 
